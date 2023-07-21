@@ -13,4 +13,5 @@
   The Secure Copy Protocol or “SCP” helps to transfer computer files securely from a local to a remote host. The SCP runs on Port 22. SCP transfers the files from one node to another with authentication and security added to that. So, the data that is being transferred remains confidential, and hence the SCP can be used to successfully block packet sniffers that can extract valuable information from the data packets.
 
 ![image](https://github.com/hithesh24r/Cloud-Render-Farm-using-AWS/assets/75219792/c25740da-cba0-486f-a6aa-f11855850859)
+
   As we are working on cloud instances, there is a risk of data leakage or insecurity. This can be avoided by using a Virtual Private Cloud in AWS as shown in Fig. 2. As stated earlier, in VPC, the computers don’t have any relation with the other computers on the same server and a security group added to the VPC, will restrict the access of certain IP Addresses over certain ports.
