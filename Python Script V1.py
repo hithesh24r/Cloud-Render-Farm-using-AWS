@@ -22,7 +22,7 @@ elif(decision=='2'):
 frames = np.array_split(frames, nodes)
 print(frames)
 
-#Defining variables
+# Defining variables
 IP=[]
 IP.append(input(f"Enter the IP Address for Master Node: "))
 for i in range(1,nodes+1):
@@ -72,28 +72,32 @@ if os.path.exists(playbook):
     os.remove(playbook)
 
 file = open(playbook, 'a')
-file.write("- name: playbook\n")
-file.write("  hosts: worker_nodes  \n")
-file.write("  strategy: free\n")
-file.write("  remote_user: ubuntu\n")
-file.write("  become: true\n")
-file.write("  tasks:\n")
-file.write("    - name: send blenderfile.blend from master to worker nodes\n")
-file.write("      copy: \n")
-file.write("        src: /home/ubuntu/blenderfile.blend\n")
-file.write("        dest: /home/ubuntu/\n")
-file.write("        mode: '0644'\n")
-file.write("    - name: Start the rendering process by running Blender in background\n")
-file.write("      command: blender -b /home/ubuntu/blenderfile.blend -E CYCLES -F PNG -f {{frames}} -o ./####.png\n")
-file.write("- name: localhost_playbook\n")
-file.write("  hosts: localhost\n")
-file.write("  remote_user: ubuntu\n")
-file.write("  become: true\n")
-file.write("  tasks:\n")
-file.write("    - name: Sending files to master node from worker node through Secure Copy or SCP Protocol\n")
-file.write("      command: scp ubuntu@{{item}}:/home/ubuntu/*.png /home/ubuntu\n")
-file.write("      loop:\n")
 
+playbook_commands = ["- name: playbook\n",
+"  hosts: worker_nodes  \n",
+"  strategy: free\n",
+"  remote_user: ubuntu\n",
+"  become: true\n",
+"  tasks:\n",
+"    - name: send blenderfile.blend from master to worker nodes\n",
+"      copy: \n",
+"        src: /home/ubuntu/blenderfile.blend\n",
+"        dest: /home/ubuntu/\n",
+"        mode: '0644'\n",
+"    - name: Start the rendering process by running Blender in background\n",
+"      command: blender -b /home/ubuntu/blenderfile.blend -E CYCLES -F PNG -f {{frames}} -o ./####.png\n",
+"- name: localhost_playbook\n",
+"  hosts: localhost\n",
+"  remote_user: ubuntu\n",
+"  become: true\n",
+"  tasks:\n",
+"    - name: Sending files to master node from worker node through Secure Copy or SCP Protocol\n",
+"      command: scp ubuntu@{{item}}:/home/ubuntu/*.png /home/ubuntu\n",
+"      loop:\n"]
+
+for i in range(len(playbook_commands)):
+    file.write(playbook_commands[i])
+    
 for i in range(1,nodes+1):
   i = str(i)
   file.write('        - "{{IP' + i + '}}"\n')
